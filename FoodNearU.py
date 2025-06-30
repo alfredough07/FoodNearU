@@ -2,6 +2,7 @@
 import googlemaps # https://googlemaps.github.io/google-maps-services-python/docs/index.html#googlemaps.Client.geocode
 from google import genai
 from google.genai import types
+
 import time
 import os
 import json
@@ -52,7 +53,7 @@ cursor.execute('''
                rating REAL,
                price_level TEXT)
 
-''')
+''') # Address should be TEXT, not REAL? Because we input a string address or ZIP but want a street address stored
 db.commit()
 
 # Query the SQL database for results
@@ -89,59 +90,46 @@ for place in results[:limit]:
 db.commit()
 db.close()
 
-# Construct output using Google GenAI
+
 # Construct output using Google GenAI
 # Set environment variables
 my_api_key = os.getenv('GENAI_KEY') 
-genai.api_key = my_api_key
-
-# Create an genAI client using the key from our environment variable
 client = genai.Client(api_key=my_api_key)
-
 
 # Collect the responses
 responses = []
 for place in restaurants[:2]:
     name = place.get('name', 'No name available')
-    address = place.get('vicinity') or place.get('formatted_address') or 'No address available'
+    address = place.get('address') or 'No address available'
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         config=types.GenerateContentConfig(
-        system_instruction="You are a travel advisor who clearly describes resteraunts in a few words. " \
-        "You will be given the resteraunt name and location"
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            system_instruction="You are a travel advisor who clearly describes resteraunts." \
+            "You will be given the resteraunt name and location"
         ),
-        contents=f"Restaurant name: {name}, Address: {address}",
+        contents=f"Here is the data for the restaurant: Restaurant name: {name}, Address: {address}",
     )
     responses += [response.text]
+
+
 # Print the output
-if not results:
-    if not restaurants:
-        print("No restaurants found in the specified radius. Please try again with a larger radius.")
-    else:
-        print(f"Found {len(restaurants)} restaurants near {location} within {r / 1609.34:.2f} miles\n\n")
-        for i in min(limit, len(restaurants)):
-            place = restaurants[i]
-            name = place.get('name', 'No name available')
-            address = place.get('vicinity') or place.get('formatted_address') or 'No address available' # Use 'vicinity' or 'formatted_address' if available
-            rating = place.get('rating', 'N/A')
-            price_level = place.get('price_level', 'No price level available')
-            print(f"{i}) {name}")
-            print(f"{address}  |  {rating}")
-            if isinstance(price_level, int):
-                price_lvl_str = "-----"
-                for j in range(price_level):
-                    price_level[j] = '*'
-                print(f"Cost: {price_lvl_str}")
-            else:
-                print(f"Cost: {price_level}")
-            print(f"\n{responses[i]}")
-            print("\n\n")
-
-
-
-#             ERROR   
-#             # File "/Users/alfredozuniga/Desktop/FoodNearU/FoodNearU.py", line 98, in <module>
-#     client = genai.Client(api_key=my_api_key)
-#              ^^^^^^^^^^^^
-
-# pip3 install google-genai# AttributeError: module 'google.generativeai' has no attribute 'Client
+if not restaurants:
+    print("No restaurants found in the specified radius. Please try again with a larger radius.")
+else:
+    print(f"Found {len(restaurants)} restaurants near {location} within {r / 1609.34:.2f} miles\n")
+    for i in range(min(limit, len(restaurants))):
+        place = restaurants[i]
+        name = place.get('name', 'No name available')
+        address = place.get('address') or 'No address available' # Use 'vicinity' or 'formatted_address' if available
+        rating = place.get('rating', 'N/A')
+        price_level = place.get('price_level', 'No price level available')
+        print(f"{i+1}) {name}")
+        print(f"{address}  |  {rating}")
+        if isinstance(price_level, int):
+            price_lvl_str = "$" * price_level + "-" * (5 - price_level)
+            print(f"Cost: {price_lvl_str}")
+        else:
+            print(f"Cost: {price_level}")
+        print(f"\n{responses[i]}")
+        print("\n" + "-"*50 + "\n")
