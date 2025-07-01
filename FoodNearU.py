@@ -12,11 +12,11 @@ import sqlite3
 from dotenv import load_dotenv
 load_dotenv()
 
-#Setup DB connection
+# Setup DB connection
 db = sqlite3.connect("restaurants.db")
 cursor = db.cursor()
 
-#Enable Geocoding API and Places API in Google Cloud Console...
+# Enable Geocoding API and Places API in Google Cloud Console...
 # Create the googlemaps API client
 API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 gmaps = googlemaps.Client(key=API_KEY)
@@ -49,7 +49,7 @@ cursor.execute('''
     CREATE TABLE IF NOT EXISTS restaurants(
                id INTEGER PRIMARY KEY AUTOINCREMENT,
                name TEXT,
-               address REAL,
+               address TEXT,
                rating REAL,
                price_level TEXT)
 
@@ -98,14 +98,15 @@ client = genai.Client(api_key=my_api_key)
 
 # Collect the responses
 responses = []
-for place in restaurants[:2]:
+for place in restaurants[:limit]:
     name = place.get('name', 'No name available')
     address = place.get('address') or 'No address available'
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         config=types.GenerateContentConfig(
             thinking_config=types.ThinkingConfig(thinking_budget=0),
-            system_instruction="You are a travel advisor who clearly describes resteraunts." \
+            system_instruction="You are a travel advisor who clearly describes resteraunts briefly " \
+            "highlighting the atmosphere, local popularity, and popular menu items." \
             "You will be given the resteraunt name and location"
         ),
         contents=f"Here is the data for the restaurant: Restaurant name: {name}, Address: {address}",
@@ -117,7 +118,9 @@ for place in restaurants[:2]:
 if not restaurants:
     print("No restaurants found in the specified radius. Please try again with a larger radius.")
 else:
-    print(f"Found {len(restaurants)} restaurants near {location} within {r / 1609.34:.2f} miles\n")
+    print("\n" + "-"*50 + "\n")
+    print(f"Found {len(restaurants)} restaurants near {location} within {r / 1609.34:.2f} miles")
+    print("\n" + "-"*50 + "\n")
     for i in range(min(limit, len(restaurants))):
         place = restaurants[i]
         name = place.get('name', 'No name available')
