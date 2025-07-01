@@ -1,0 +1,928 @@
+{
+    "business_status": "OPERATIONAL",
+    "geometry": {
+        "location": {
+            "lat": 32.5887814,
+            "lng": -96.95653999999999
+        },
+        "viewport": {
+            "northeast": {
+                "lat": 32.59007432989272,
+                "lng": -96.95517997010728
+            },
+            "southwest": {
+                "lat": 32.58737467010727,
+                "lng": -96.95787962989272
+            }
+        }
+    },
+    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "icon_background_color": "#FF9E67",
+    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+    "name": "Sam's Pizza",
+    "opening_hours": {
+        "open_now": true
+    },
+    "photos": [
+        {
+            "height": 2048,
+            "html_attributions": [
+                "<a href=\"https://maps.google.com/maps/contrib/104994184077584609409\">Anthony Etienne</a>"
+            ],
+            "photo_reference": "ATKogpeP11f1Q4krN6F8fHltOeXcd2oxL-UcbJ5BUeniESRvyMKlSYgQehpUdJPLw0o5m4Hxtv4RnMzjJHMxjYZ8lZrU7IpKW8CaTZA7I-LLpuX12qONFoLcZN-w1Xg9ed9pvWW7b0Xq3D0NiY361D95dAZo30WvMr8qXGq0hYiX1IUqfClqsqToxlq4lyKsqKmnMSKc-7sAJW_UGDdHdb8AlAiV3fytRMdO3O3Gp9973PsFDSe_AJMdmx8SRbegjGqYE79y7rH5g_WINmZ8cygZmljgFIEIyffhZy09zhRh848M6lVMSOZ2jXdzukLZID4-KKwJYaG2Z-Ewq5iOMo2AIuWdqOHUSKZQIZSInYgEHoX9QDsX8ZcI9fNw9ZnLVEFmT4Ekhr9FjVy61y9ELSTx9LqqTsTeREl0QZwUrc6KW94kXTMCplhjVJgOKNv7aOKN4RPh_Jm-i4EYZaig5PItovvamnE1EzSa5RIaCVmz71oRRzQE6csjqrqvTKrCe8cTtcZNYjUsQT2pOZWwnOtNpw8RhieBxLBGAYsyZbJN22YwJJSs3KaJjKqHbviVpu8Z7jS8JMPm",
+            "width": 1536
+        }
+    ],
+    "place_id": "ChIJhZm5xLaNToYRcvi0YEL4ZaE",
+    "plus_code": {
+        "compound_code": "H2QV+G9 Cedar Hill, Texas",
+        "global_code": "8645H2QV+G9"
+    },
+    "price_level": 1,
+    "rating": 4.7,
+    "reference": "ChIJhZm5xLaNToYRcvi0YEL4ZaE",
+    "scope": "GOOGLE",
+    "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+    ],
+    "user_ratings_total": 3073,
+    "vicinity": "601 Cedar St, Cedar Hill"
+}
+
+
+
+###########
+[
+    {
+        "address_components": [
+            {
+                "long_name": "120",
+                "short_name": "120",
+                "types": [
+                    "subpremise"
+                ]
+            },
+            {
+                "long_name": "638",
+                "short_name": "638",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "Uptown Boulevard",
+                "short_name": "Uptown Blvd",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "75104",
+                "short_name": "75104",
+                "types": [
+                    "postal_code"
+                ]
+            },
+            {
+                "long_name": "3539",
+                "short_name": "3539",
+                "types": [
+                    "postal_code_suffix"
+                ]
+            }
+        ],
+        "formatted_address": "638 Uptown Blvd #120, Cedar Hill, TX 75104, USA",
+        "geometry": {
+            "location": {
+                "lat": 32.59811260000001,
+                "lng": -96.9442493
+            },
+            "location_type": "ROOFTOP",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.59946158029151,
+                    "lng": -96.9429003197085
+                },
+                "southwest": {
+                    "lat": 32.59676361970851,
+                    "lng": -96.9455982802915
+                }
+            }
+        },
+        "navigation_points": [
+            {
+                "location": {
+                    "latitude": 32.5980529,
+                    "longitude": -96.9441118
+                }
+            }
+        ],
+        "place_id": "ChIJsTPnvMGNToYRqF8ezz86yeo",
+        "plus_code": {
+            "compound_code": "H3X4+68 Cedar Hill, TX, USA",
+            "global_code": "8645H3X4+68"
+        },
+        "types": [
+            "bar",
+            "establishment",
+            "food",
+            "point_of_interest",
+            "restaurant"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "638",
+                "short_name": "638",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "Uptown Boulevard",
+                "short_name": "Uptown Blvd",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "75104",
+                "short_name": "75104",
+                "types": [
+                    "postal_code"
+                ]
+            },
+            {
+                "long_name": "3538",
+                "short_name": "3538",
+                "types": [
+                    "postal_code_suffix"
+                ]
+            }
+        ],
+        "formatted_address": "638 Uptown Blvd, Cedar Hill, TX 75104, USA",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 32.5982903,
+                    "lng": -96.9439998
+                },
+                "southwest": {
+                    "lat": 32.5980077,
+                    "lng": -96.9445349
+                }
+            },
+            "location": {
+                "lat": 32.5981497,
+                "lng": -96.9442711
+            },
+            "location_type": "ROOFTOP",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.5994979802915,
+                    "lng": -96.9429183697085
+                },
+                "southwest": {
+                    "lat": 32.5968000197085,
+                    "lng": -96.9456163302915
+                }
+            }
+        },
+        "navigation_points": [
+            {
+                "location": {
+                    "latitude": 32.5980329,
+                    "longitude": -96.9442249
+                }
+            }
+        ],
+        "place_id": "ChIJJYv8vMGNToYRQmWiYzjD14A",
+        "types": [
+            "premise",
+            "street_address"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "210",
+                "short_name": "210",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "Farm to Market Road 1382",
+                "short_name": "FM1382",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "75104",
+                "short_name": "75104",
+                "types": [
+                    "postal_code"
+                ]
+            }
+        ],
+        "formatted_address": "210 FM1382, Cedar Hill, TX 75104, USA",
+        "geometry": {
+            "location": {
+                "lat": 32.597959,
+                "lng": -96.943865
+            },
+            "location_type": "ROOFTOP",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.5993079802915,
+                    "lng": -96.94251601970849
+                },
+                "southwest": {
+                    "lat": 32.5966100197085,
+                    "lng": -96.94521398029151
+                }
+            }
+        },
+        "navigation_points": [
+            {
+                "location": {
+                    "latitude": 32.5979585,
+                    "longitude": -96.943842
+                }
+            }
+        ],
+        "place_id": "ChIJU67buMGNToYRRm4kKiemyrw",
+        "plus_code": {
+            "compound_code": "H3X4+5F Cedar Hill, TX, USA",
+            "global_code": "8645H3X4+5F"
+        },
+        "types": [
+            "street_address"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "638",
+                "short_name": "638",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "Uptown Boulevard",
+                "short_name": "Uptown Blvd",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "75104",
+                "short_name": "75104",
+                "types": [
+                    "postal_code"
+                ]
+            },
+            {
+                "long_name": "3507",
+                "short_name": "3507",
+                "types": [
+                    "postal_code_suffix"
+                ]
+            }
+        ],
+        "formatted_address": "638 Uptown Blvd, Cedar Hill, TX 75104, USA",
+        "geometry": {
+            "location": {
+                "lat": 32.5980776,
+                "lng": -96.9446931
+            },
+            "location_type": "RANGE_INTERPOLATED",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.5994265802915,
+                    "lng": -96.94334411970848
+                },
+                "southwest": {
+                    "lat": 32.5967286197085,
+                    "lng": -96.9460420802915
+                }
+            }
+        },
+        "place_id": "Eio2MzggVXB0b3duIEJsdmQsIENlZGFyIEhpbGwsIFRYIDc1MTA0LCBVU0EiGxIZChQKEgkZou2lwY1OhhHSBZnR7Er7ERD-BA",
+        "types": [
+            "street_address"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "H3X4+68",
+                "short_name": "H3X4+68",
+                "types": [
+                    "plus_code"
+                ]
+            },
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            }
+        ],
+        "formatted_address": "H3X4+68 Cedar Hill, TX, USA",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 32.598125,
+                    "lng": -96.944125
+                },
+                "southwest": {
+                    "lat": 32.598,
+                    "lng": -96.94425
+                }
+            },
+            "location": {
+                "lat": 32.59811260000001,
+                "lng": -96.9442493
+            },
+            "location_type": "GEOMETRIC_CENTER",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.5994114802915,
+                    "lng": -96.9428385197085
+                },
+                "southwest": {
+                    "lat": 32.5967135197085,
+                    "lng": -96.94553648029151
+                }
+            }
+        },
+        "place_id": "GhIJrCkk9I5MQEARVrGdlG48WMA",
+        "plus_code": {
+            "compound_code": "H3X4+68 Cedar Hill, TX, USA",
+            "global_code": "8645H3X4+68"
+        },
+        "types": [
+            "plus_code"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "634-638",
+                "short_name": "634-638",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "Uptown Boulevard",
+                "short_name": "Uptown Blvd",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "75104",
+                "short_name": "75104",
+                "types": [
+                    "postal_code"
+                ]
+            },
+            {
+                "long_name": "3507",
+                "short_name": "3507",
+                "types": [
+                    "postal_code_suffix"
+                ]
+            }
+        ],
+        "formatted_address": "634-638 Uptown Blvd, Cedar Hill, TX 75104, USA",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 32.5982294,
+                    "lng": -96.94459619999999
+                },
+                "southwest": {
+                    "lat": 32.5971121,
+                    "lng": -96.94473520000001
+                }
+            },
+            "location": {
+                "lat": 32.5976758,
+                "lng": -96.9446106
+            },
+            "location_type": "GEOMETRIC_CENTER",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.5990197302915,
+                    "lng": -96.9433167197085
+                },
+                "southwest": {
+                    "lat": 32.5963217697085,
+                    "lng": -96.94601468029151
+                }
+            }
+        },
+        "place_id": "ChIJGaLtpcGNToYR0gWZ0exK-xE",
+        "types": [
+            "route"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            }
+        ],
+        "formatted_address": "Cedar Hill, TX, USA",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 32.639408,
+                    "lng": -96.891018
+                },
+                "southwest": {
+                    "lat": 32.5359549,
+                    "lng": -97.02129699999999
+                }
+            },
+            "location": {
+                "lat": 32.5884689,
+                "lng": -96.9561152
+            },
+            "location_type": "APPROXIMATE",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.639408,
+                    "lng": -96.891018
+                },
+                "southwest": {
+                    "lat": 32.5359549,
+                    "lng": -97.02129699999999
+                }
+            }
+        },
+        "place_id": "ChIJl6JxFMiNToYR-bNYOtlbJuU",
+        "types": [
+            "locality",
+            "political"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "75104",
+                "short_name": "75104",
+                "types": [
+                    "postal_code"
+                ]
+            },
+            {
+                "long_name": "Cedar Hill",
+                "short_name": "Cedar Hill",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            }
+        ],
+        "formatted_address": "Cedar Hill, TX 75104, USA",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 32.656225,
+                    "lng": -96.89961679999999
+                },
+                "southwest": {
+                    "lat": 32.5335127,
+                    "lng": -97.06551759999999
+                }
+            },
+            "location": {
+                "lat": 32.59423,
+                "lng": -96.9423844
+            },
+            "location_type": "APPROXIMATE",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.656225,
+                    "lng": -96.89961679999999
+                },
+                "southwest": {
+                    "lat": 32.5335127,
+                    "lng": -97.06551759999999
+                }
+            }
+        },
+        "place_id": "ChIJV0ktruCLToYRFnb94sGeIy4",
+        "types": [
+            "postal_code"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "Dallas County",
+                "short_name": "Dallas County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            }
+        ],
+        "formatted_address": "Dallas County, TX, USA",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 32.9896911,
+                    "lng": -96.51687
+                },
+                "southwest": {
+                    "lat": 32.5452141,
+                    "lng": -97.038685
+                }
+            },
+            "location": {
+                "lat": 32.8024682,
+                "lng": -96.83509989999999
+            },
+            "location_type": "APPROXIMATE",
+            "viewport": {
+                "northeast": {
+                    "lat": 32.9896911,
+                    "lng": -96.51687
+                },
+                "southwest": {
+                    "lat": 32.5452141,
+                    "lng": -97.038685
+                }
+            }
+        },
+        "navigation_points": [
+            {
+                "location": {
+                    "latitude": 32.8023904,
+                    "longitude": -96.83507
+                }
+            }
+        ],
+        "place_id": "ChIJgUO9Ukq_ToYRh9ndnDaZsUc",
+        "types": [
+            "administrative_area_level_2",
+            "political"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "Texas",
+                "short_name": "TX",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            }
+        ],
+        "formatted_address": "Texas, USA",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 36.5007041,
+                    "lng": -93.5080389
+                },
+                "southwest": {
+                    "lat": 25.8371165,
+                    "lng": -106.6456461
+                }
+            },
+            "location": {
+                "lat": 31.9685988,
+                "lng": -99.9018131
+            },
+            "location_type": "APPROXIMATE",
+            "viewport": {
+                "northeast": {
+                    "lat": 36.5007041,
+                    "lng": -93.5080389
+                },
+                "southwest": {
+                    "lat": 25.8371165,
+                    "lng": -106.6456461
+                }
+            }
+        },
+        "place_id": "ChIJSTKCCzZwQIYRPN4IGI8c6xY",
+        "types": [
+            "administrative_area_level_1",
+            "political"
+        ]
+    },
+    {
+        "address_components": [
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            }
+        ],
+        "formatted_address": "United States",
+        "geometry": {
+            "bounds": {
+                "northeast": {
+                    "lat": 74.071038,
+                    "lng": -66.885417
+                },
+                "southwest": {
+                    "lat": 18.7763,
+                    "lng": 166.9999999
+                }
+            },
+            "location": {
+                "lat": 38.7945952,
+                "lng": -106.5348379
+            },
+            "location_type": "APPROXIMATE",
+            "viewport": {
+                "northeast": {
+                    "lat": 74.071038,
+                    "lng": -66.885417
+                },
+                "southwest": {
+                    "lat": 18.7763,
+                    "lng": 166.9999999
+                }
+            }
+        },
+        "place_id": "ChIJCzYy5IS16lQRQrfeQ5K5Oxw",
+        "types": [
+            "country",
+            "political"
+        ]
+    }
+]
