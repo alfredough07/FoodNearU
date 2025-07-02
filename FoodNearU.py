@@ -24,7 +24,58 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
     limit: The number of results specified by the user
 
     Return: A list of restaurants matching the number specified by the user's limit
-    '''    
+    '''  
+
+    #Check cache 
+
+    #Extract zipcode and city from geocode
+    city = zipcode = None
+    cursor = db.cursor()
+    location = geocode[0]['geometry']['location']
+    geocode_info = gmaps.reverse_geocode((location['lat'], location['lng']))
+    if geocode_info:
+        formatted = geocode_info[0].get('formatted_address', 'No address available')
+        geocode_parts = formatted.split(',')
+        #print(geocode_parts) #['638 Uptown Blvd #120', ' Cedar Hill', ' TX 75104', ' USA']
+        if len(geocode_parts) >=3:
+            city = geocode_parts[-3].strip()
+            zipcode = geocode_parts[-2].strip().split(' ')[-1]  # Get the last part of the second to last element
+    
+    #Try to get restaurants from the database first
+    if food_type:
+        cursor.execute('''
+                       Select name, address, zipcode, city, rating, price_level
+                         FROM restaurants
+                         WHERE zipcode = ? AND city = ? AND keyword = ?
+                         LIMIT ?
+                       ''', (zipcode, city, food_type, limit))
+    else:
+        # If no food type is specified, just get all restaurants in the city and zipcode
+        cursor.execute('''
+                       Select name, address, zipcode, city, rating, price_level
+                         FROM restaurants
+                         WHERE zipcode = ? AND city = ? and keyword IS NULL
+                         LIMIT ?
+                       ''', (zipcode, city, limit))
+    cached = cursor.fetchall()
+    restaurants = [
+         {
+                'name': row[0],
+                'address': row[1],
+                'zipcode': row[2],
+                'city': row[3],
+                'rating': row[4],
+                'price_level': row[5]
+         }
+            for row in cached
+     ]
+    if len(restaurants) >= limit:
+        print(f"Found {len(restaurants)} restaurants in the database for {city}, {zipcode}.")
+        return restaurants
+    else:
+        print(f"Fetching {limit - len(restaurants)} places from Google Places API...")
+
+
     places = gmaps.places_nearby(location=geocode[0]['geometry']['location'], radius=int(r), type='restaurant', keyword=food_type)
 
     # Construct
@@ -33,7 +84,7 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
         time.sleep(2)
         places = gmaps.places(page_token=places['next_page_token'])
         results.extend(places['results'])
-    restaurants = []
+    new_restaurants = []
     for place in results[:limit]:
         # json_data = json.dumps(place, indent=4)
         # print(json_data)
@@ -54,9 +105,9 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
                 zipcode = geocode_parts[-2].strip().split(' ')[-1]  # Get the last part of the second to last element
             else:
                 print("Unexpected geocode format:", geocode_parts)
-            print(f"City: {city}, Zipcode: {zipcode}")
+            #print(f"City: {city}, Zipcode: {zipcode}")
         # print(json.dumps(geocode_info, indent=4))
-        restaurants.append({
+        new_restaurants.append({
             'name': name,
             'address': address,
             'zipcode': zipcode,
@@ -65,13 +116,14 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
             'price_level': price_level
         })
         cursor.execute('''
-        INSERT INTO restaurants(name, address, zipcode, city, rating, price_level) 
-                    VALUES (?, ?, ?, ?, ?, ?)
-                    ''', (name, address, zipcode, city, rating, str(price_level)))
-
+        INSERT OR IGNORE INTO restaurants(name, address, zipcode, city, rating, price_level, keyword) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    ''', (name, address, zipcode, city, rating, price_level, food_type))
+        if len(restaurants) + len(new_restaurants) >= limit:
+            break
+    print(f"Found {len(restaurants)} cached restaurants and {len(new_restaurants)} new restaurants from Google Places API.")
     db.commit()
-    db.close()
-    return restaurants
+    return restaurants + new_restaurants
 
 
 def genAI_responses(limit: int, restaurants: list) -> list:
@@ -79,10 +131,9 @@ def genAI_responses(limit: int, restaurants: list) -> list:
     Collects the responses from the Google GenAI summary of the restaurants
 
     limit: The number of responses to output as defined by the user
-    restraurants: The list of individual restraunts returned by the query
+    restraurants: The list of individual restaraunts returned by the query
 
-    Re
-urns: A list of genAI summaries of the passed restaurants    '''
+    Returns: A list of genAI summaries of the passed restaurants    '''
     # Construct output using Google GenAI
     # Set environment variables
     my_api_key = os.getenv('GENAI_KEY') 
@@ -97,9 +148,9 @@ urns: A list of genAI summaries of the passed restaurants    '''
             model="gemini-2.5-flash",
             config=types.GenerateContentConfig(
                 thinking_config=types.ThinkingConfig(thinking_budget=0),
-                system_instruction="You are a travel advisor who clearly describes resteraunts briefly " \
+                system_instruction="You are a travel advisor who clearly describes restaurants briefly " \
                 "highlighting the atmosphere, local popularity, and popular menu items." \
-                "You will be given the resteraunt name and location"
+                "You will be given the restaurant name and location"
             ),
             contents=f"Here is the data for the restaurant: Restaurant name: {name}, Address: {address}",
         )
@@ -107,7 +158,7 @@ urns: A list of genAI summaries of the passed restaurants    '''
     return responses
 
 
-def output(limit: int, restaurants: list, responses: list) -> None:
+def output(limit: int, restaurants: list, responses: list, location:str, r:float) -> None:
     '''
     Prints the returned restaurants from the user query
     limit: The number of responses to output as defined
@@ -126,7 +177,7 @@ def output(limit: int, restaurants: list, responses: list) -> None:
             for i in range(min(limit, len(restaurants))):
                 place = restaurants[i]
                 name = place.get('name', 'No name available')
-                address = place.get('address') or 'No address available' # Use 'vicinity' or 'formatted_address' if available
+                address = place.get('address', 'No address available')
                 rating = place.get('rating', 'N/A')
                 price_level = place.get('price_level', 'No price level available')
                 print(f"{i+1}) {name}", file=out)
@@ -174,8 +225,8 @@ if not limit:
     limit = 60
 else:
     limit = int(limit)
-    cursor.execute("DROP TABLE IF EXISTS restaurants")
-    cursor.execute('''
+#cursor.execute('''DROP TABLE IF EXISTS restaurants''') # Clear the table if it exists
+cursor.execute('''
     CREATE TABLE IF NOT EXISTS restaurants(
                id INTEGER PRIMARY KEY AUTOINCREMENT,
                name TEXT,
@@ -183,7 +234,9 @@ else:
                zipcode TEXT,
                city TEXT,
                rating REAL,
-               price_level TEXT
+               price_level INTEGER,
+               keyword TEXT,
+               UNIQUE(name,address, keyword)
                )
 
 ''')
@@ -192,4 +245,5 @@ db.commit()
 # Run the defined functions
 restaurants = get_restaurants(gmaps, db, geocode, r, food_type, limit)
 responses = genAI_responses(limit, restaurants)
-output(limit, restaurants, responses)
+output(limit, restaurants, responses, location, r)
+db.close()  # Close the database connection
