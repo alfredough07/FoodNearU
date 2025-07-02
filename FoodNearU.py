@@ -214,7 +214,7 @@ def output(limit: int, restaurants: list, responses: list,
                 f"Found {
                     len(restaurants)} restaurants near {location} within {
                     r /
-                    1609.34:.2f} miles",
+                    1609.34: .2f} miles",
                 file=out)
             print("\n" + "-" * 50 + "\n", file=out)
             for i in range(min(limit, len(restaurants))):
