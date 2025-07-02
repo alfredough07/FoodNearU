@@ -1,5 +1,8 @@
 # imports
-import googlemaps # https://googlemaps.github.io/google-maps-services-python/docs/index.html#googlemaps.Client.geocode
+# Google Maps API docs:
+# https://googlemaps.github.io/google-maps-services-python/
+# docs/index.html#googlemaps.Client.geocode
+import googlemaps
 from google import genai
 from google.genai import types
 import textwrap
@@ -10,10 +13,11 @@ import sqlite3
 from dotenv import load_dotenv
 
 
-def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)-> list:
-
+def get_restaurants(gmaps, db, geocode: list, r: int,
+                    food_type: str, limit: int) -> list:
     '''
-    Query the database first to get results defaulting to the Google Places API if not enough
+    Query the database first to get results defaulting
+    to the Google Places API if not enough
     results are returned from the database.
 
     gmaps: the Google Maps Client object
@@ -23,62 +27,74 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
     food_type: The type of food that the user is searching for
     limit: The number of results specified by the user
 
-    Return: A list of restaurants matching the number specified by the user's limit
-    '''  
+    Return: A list of restaurants matching the number
+    specified by the user's limit
+    '''
 
-    #Check cache 
+    # Check cache
 
-    #Extract zipcode and city from geocode
+    # Extract zipcode and city from geocode
     city = zipcode = None
     cursor = db.cursor()
     location = geocode[0]['geometry']['location']
     geocode_info = gmaps.reverse_geocode((location['lat'], location['lng']))
     if geocode_info:
-        formatted = geocode_info[0].get('formatted_address', 'No address available')
+        formatted = geocode_info[0].get(
+            'formatted_address', 'No address available')
         geocode_parts = formatted.split(',')
-        #print(geocode_parts) #['638 Uptown Blvd #120', ' Cedar Hill', ' TX 75104', ' USA']
-        if len(geocode_parts) >=3:
+        # print(geocode_parts) #['638 Uptown Blvd #120', ' Cedar Hill', ' TX
+        # 75104', ' USA']
+        if len(geocode_parts) >= 3:
             city = geocode_parts[-3].strip()
-            zipcode = geocode_parts[-2].strip().split(' ')[-1]  # Get the last part of the second to last element
-    
-    #Try to get restaurants from the database first
+            # Get the last part of the second to last element
+            zipcode = geocode_parts[-2].strip().split(' ')[-1]
+
+    # Try to get restaurants from the database first
     if food_type:
         cursor.execute('''
-                       SELECT DISTINCT name, address, zipcode, city, rating, price_level
+                       SELECT DISTINCT
+                        name, address, zipcode, city, rating, price_level
                          FROM restaurants
-                         WHERE zipcode = ? OR city = ? AND keyword = ?
+                         WHERE (zipcode = ? OR city = ?) AND keyword = ?
                          LIMIT ?
                        ''', (zipcode, city, food_type, limit))
     else:
-        # If no food type is specified, just get all restaurants in the city and zipcode
+        # If no food type is specified, just get all restaurants in the city
+        # and zipcode
         cursor.execute('''
-                       SELECT DISTINCT name, address, zipcode, city, rating, price_level
-                         FROM restaurants
-                         WHERE zipcode = ? OR city = ? AND keyword IS NULL
-                         LIMIT ?
+                       SELECT DISTINCT
+                       name, address, zipcode, city, rating, price_level
+                        FROM restaurants
+                        WHERE (zipcode = ? OR city = ?) AND keyword IS NULL
+                        LIMIT ?
                        ''', (zipcode, city, limit))
     cached = cursor.fetchall()
     restaurants = [
-         {
-                'name': row[0],
-                'address': row[1],
-                'zipcode': row[2],
-                'city': row[3],
-                'rating': row[4],
-                'price_level': row[5]
-         }
-            for row in cached
-     ]
-    existing_restaurants = {(r['name'], r['address'], r['zipcode']) for r in restaurants}
-
-    if len(restaurants) >= limit:
-        print(f"Found {len(restaurants)} restaurants in the database for {city}, {zipcode}.")
+        {
+            'name': row[0],
+            'address': row[1],
+            'zipcode': row[2],
+            'city': row[3],
+            'rating': row[4],
+            'price_level': row[5]
+        }
+        for row in cached
+    ]
+    existing_restaurants = {
+        (r['name'], r['address'], r['zipcode']) for r in restaurants}
+    lenRes = len(restaurants)
+    if lenRes >= limit:
+        print(f"Found {lenRes} restaurants in the database")
         return restaurants
     else:
-        print(f"Fetching {limit - len(restaurants)} places from Google Places API...")
+        print(f"Found {lenRes} restaurants in the database")
+        print(f"Fetching {limit - lenRes} places from Places API...")
 
-
-    places = gmaps.places_nearby(location=geocode[0]['geometry']['location'], radius=int(r), type='restaurant', keyword=food_type)
+    places = gmaps.places_nearby(
+        location=geocode[0]['geometry']['location'],
+        radius=int(r),
+        type='restaurant',
+        keyword=food_type)
 
     # Construct
     results = places['results']
@@ -91,27 +107,33 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
         # json_data = json.dumps(place, indent=4)
         # print(json_data)
         name = place.get('name', 'No name available')
-        address = place.get('vicinity') or place.get('formatted_address') or 'No address available' # Use 'vicinity' or 'formatted_address' if available
+        # Use 'vicinity' or 'formatted_address' if available
+        address = place.get('vicinity') or place.get(
+            'formatted_address') or 'No address available'
         if (name, address, zipcode) in existing_restaurants:
             continue
         else:
             existing_restaurants.add((name, address, zipcode))
         rating = place.get('rating', 'N/A')
         price_level = place.get('price_level', 'No price level available')
-        #Get city and zipcode
+        # Get city and zipcode
         city = zipcode = None
         location = place["geometry"]["location"]
-        geocode_info = gmaps.reverse_geocode((location['lat'], location['lng']))
+        geocode_info = gmaps.reverse_geocode(
+            (location['lat'], location['lng']))
         if geocode_info:
-            formatted = geocode_info[0].get('formatted_address', 'No address available')
+            formatted = geocode_info[0].get(
+                'formatted_address', 'No address available')
             geocode_parts = formatted.split(',')
-            #print(geocode_parts) #['638 Uptown Blvd #120', ' Cedar Hill', ' TX 75104', ' USA']
-            if len(geocode_parts) >=3:
+            # print(geocode_parts) #['638 Uptown Blvd #120', ' Cedar Hill', '
+            # TX 75104', ' USA']
+            if len(geocode_parts) >= 3:
                 city = geocode_parts[-3].strip()
-                zipcode = geocode_parts[-2].strip().split(' ')[-1]  # Get the last part of the second to last element
+                # Get the last part of the second to last element
+                zipcode = geocode_parts[-2].strip().split(' ')[-1]
             else:
                 print("Unexpected geocode format:", geocode_parts)
-            #print(f"City: {city}, Zipcode: {zipcode}")
+            # print(f"City: {city}, Zipcode: {zipcode}")
         # print(json.dumps(geocode_info, indent=4))
         new_restaurants.append({
             'name': name,
@@ -122,12 +144,12 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
             'price_level': price_level
         })
         cursor.execute('''
-        INSERT OR IGNORE INTO restaurants(name, address, zipcode, city, rating, price_level, keyword) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                    ''', (name, address, zipcode, city, rating, price_level, food_type))
+        INSERT OR IGNORE INTO
+        restaurants(name, address, zipcode, city, rating, price_level, keyword)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (name, address, zipcode, city, rating, price_level, food_type))
         if len(restaurants) + len(new_restaurants) >= limit:
             break
-    print(f"Found {len(restaurants)} cached restaurants and {len(new_restaurants)} new restaurants from Google Places API.")
     db.commit()
     return restaurants + new_restaurants
 
@@ -137,15 +159,17 @@ def genAI_responses(limit: int, restaurants: list) -> list:
     Collects the responses from the Google GenAI summary of the restaurants
 
     limit: The number of responses to output as defined by the user
-    restraurants: The list of individual restaraunts returned by the query
+    restaurants: The list of individual restaurants returned by the query
 
-    Returns: A list of genAI summaries of the passed restaurants    '''
+    Returns: A list of genAI summaries of the passed restaurants
+    '''
     # Construct output using Google GenAI
     # Set environment variables
-    my_api_key = os.getenv('GENAI_KEY') 
+    my_api_key = os.getenv('GENAI_KEY')
     client = genai.Client(api_key=my_api_key)
 
     # Collect the responses
+    print(f"\nGenerating {min(limit, len(restaurants))} GenAI summaries...")
     responses = []
     for place in restaurants[:limit]:
         name = place.get('name', 'No name available')
@@ -154,39 +178,53 @@ def genAI_responses(limit: int, restaurants: list) -> list:
             model="gemini-2.5-flash",
             config=types.GenerateContentConfig(
                 thinking_config=types.ThinkingConfig(thinking_budget=0),
-                system_instruction="You are a travel advisor who clearly describes restaurants briefly " \
-                "highlighting the atmosphere, local popularity, and popular menu items." \
+                system_instruction="You are a travel advisor who "
+                "clearly describes restaurants briefly "
+                "highlighting the atmosphere, "
+                "local popularity, and popular menu items."
                 "You will be given the restaurant name and location"
             ),
-            contents=f"Here is the data for the restaurant: Restaurant name: {name}, Address: {address}",
+            contents=(
+                f"Here is the data for the restaurant: "
+                f"Restaurant name: {name}, Address: {address}"
+            ),
         )
         responses += [response.text]
     return responses
 
 
-def output(limit: int, restaurants: list, responses: list, location:str, r:float) -> None:
+def output(limit: int, restaurants: list, responses: list,
+           location: str, r: float) -> None:
     '''
     Prints the returned restaurants from the user query
     limit: The number of responses to output as defined
  by the user
-    restraurants: The list of individual restraunts returned by the query
+    restaurants: The list of individual restaurants returned by the query
     '''
 
-    #responses: The Google GenAI list of restaurant summaries    # Prints the output
+    # responses: The Google GenAI list of restaurant summaries    # Prints the
+    # output
     with open("out.txt", "w") as out:
         if not restaurants:
-            print("No restaurants found in the specified radius. Please try again with a larger radius.")
+            print(
+                "No restaurants found in radius. Try with a larger radius.")
         else:
-            print("\n" + "-"*50 + "\n", file=out)
-            print(f"Found {len(restaurants)} restaurants near {location} within {r / 1609.34:.2f} miles", file=out)
-            print("\n" + "-"*50 + "\n", file=out)
+            print("\n" + "-" * 50 + "\n", file=out)
+            print(
+                f"Found {
+                    len(restaurants)} restaurants near {location} within {
+                    r /
+                    1609.34:.2f} miles",
+                file=out)
+            print("\n" + "-" * 50 + "\n", file=out)
             for i in range(min(limit, len(restaurants))):
                 place = restaurants[i]
                 name = place.get('name', 'No name available')
                 address = place.get('address', 'No address available')
                 rating = place.get('rating', 'N/A')
-                price_level = place.get('price_level', 'No price level available')
-                print(f"{i+1}) {name}", file=out)
+                price_level = place.get(
+                    'price_level', 'No price level available')
+                print(f"{i + 1}) {name}", file=out)
                 print(f"{address}  |  {rating}", file=out)
                 if isinstance(price_level, int):
                     price_lvl_str = "$" * price_level + "-" * (5 - price_level)
@@ -194,7 +232,8 @@ def output(limit: int, restaurants: list, responses: list, location:str, r:float
                 else:
                     print(f"Cost: {price_level}", file=out)
                 print(f"\n{responses[i]}", file=out)
-                print("\n" + "-"*50 + "\n", file=out)
+                print("\n" + "-" * 50 + "\n", file=out)
+
 
 # Load environment variables
 load_dotenv()
@@ -215,18 +254,24 @@ print("Welcome to Food Near U!")
 # Get user inputs
 geocode = None
 while not geocode:
-    location = input("Please enter your current location (street address, city, state): ")
+    location = input(
+        "Please enter your current location (street address, city, state): ")
     geocode = gmaps.geocode(location)
-r = float(input("Please enter the radius to search in miles: ")) * 1609.34 # Convert miles to meters for Google Maps API
+    # Convert miles to meters for Google Maps API
+r = float(input("Please enter the radius to search in miles: ")) * 1609.34
 
 
-#Optionally, we can ask for type of food
-food_type = input("What type of food are you looking for? (e.g., sushi, pizza, etc.) or enter to skip: ").strip().lower()
+# Optionally, we can ask for type of food
+prompt = "Food type? (e.g., sushi, pizza, etc or press enter to skip): "
+food_type = input(prompt).strip()
+if food_type:
+    food_type = food_type.lower()
 if not food_type:
     food_type = None
 
-#Optionally we can ask for limit of results
-limit = input("How many results would you like to see? (default is 60, press enter to skip): ").strip()
+# Optionally we can ask for limit of results
+prompt = "How many results would you like? (default 60, press enter to skip): "
+limit = input(prompt).strip()
 if not limit:
     limit = 60
 else:
