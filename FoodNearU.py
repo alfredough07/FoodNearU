@@ -44,17 +44,17 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
     #Try to get restaurants from the database first
     if food_type:
         cursor.execute('''
-                       Select name, address, zipcode, city, rating, price_level
+                       SELECT DISTINCT name, address, zipcode, city, rating, price_level
                          FROM restaurants
-                         WHERE zipcode = ? AND city = ? AND keyword = ?
+                         WHERE zipcode = ? OR city = ? AND keyword = ?
                          LIMIT ?
                        ''', (zipcode, city, food_type, limit))
     else:
         # If no food type is specified, just get all restaurants in the city and zipcode
         cursor.execute('''
-                       Select name, address, zipcode, city, rating, price_level
+                       SELECT DISTINCT name, address, zipcode, city, rating, price_level
                          FROM restaurants
-                         WHERE zipcode = ? AND city = ? and keyword IS NULL
+                         WHERE zipcode = ? OR city = ? AND keyword IS NULL
                          LIMIT ?
                        ''', (zipcode, city, limit))
     cached = cursor.fetchall()
@@ -69,6 +69,8 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
          }
             for row in cached
      ]
+    existing_restaurants = {(r['name'], r['address'], r['zipcode']) for r in restaurants}
+
     if len(restaurants) >= limit:
         print(f"Found {len(restaurants)} restaurants in the database for {city}, {zipcode}.")
         return restaurants
@@ -90,6 +92,10 @@ def get_restaurants(gmaps, db, geocode: list, r: int, food_type: str, limit:int)
         # print(json_data)
         name = place.get('name', 'No name available')
         address = place.get('vicinity') or place.get('formatted_address') or 'No address available' # Use 'vicinity' or 'formatted_address' if available
+        if (name, address, zipcode) in existing_restaurants:
+            continue
+        else:
+            existing_restaurants.add((name, address, zipcode))
         rating = place.get('rating', 'N/A')
         price_level = place.get('price_level', 'No price level available')
         #Get city and zipcode
@@ -225,18 +231,17 @@ if not limit:
     limit = 60
 else:
     limit = int(limit)
-#cursor.execute('''DROP TABLE IF EXISTS restaurants''') # Clear the table if it exists
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS restaurants(
                id INTEGER PRIMARY KEY AUTOINCREMENT,
                name TEXT,
                address TEXT,
-               zipcode TEXT,
+               zipcode INTEGER,
                city TEXT,
                rating REAL,
                price_level INTEGER,
                keyword TEXT,
-               UNIQUE(name,address, keyword)
+               UNIQUE(name,address, zipcode)
                )
 
 ''')
