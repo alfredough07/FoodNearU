@@ -1,8 +1,0 @@
-# Secrets
-.env
-
-# macOS
-.DS_Store
-
-out.txt
-restaurants.db
