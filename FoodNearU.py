@@ -49,6 +49,14 @@ def get_restaurants(
             # Get the last part of the second to last element
             zipcode = geocode_parts[-2].strip().split(" ")[-1]
 
+        # #Mexico
+        # address_components = geocode_info[0].get("address_components", [])
+        # for comp in address_components:
+        #     if "locality" in comp["types"]:  # City
+        #         city = comp["long_name"]
+        #     elif "postal_code" in comp["types"]:  # Zipcode
+        #         zipcode = comp["long_name"]
+
     # Try to get restaurants from the database first
     if food_type:
         cursor.execute(

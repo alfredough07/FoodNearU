@@ -1,0 +1,7 @@
+# Secrets
+.env
+
+# macOS
+.DS_Store
+
+out.txt
